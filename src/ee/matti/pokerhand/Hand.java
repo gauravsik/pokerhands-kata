@@ -180,6 +180,7 @@ public class Hand implements Comparable<Hand> {
 	}
 
 	public FourOfAKind fourOfAKind() {
+		/* TODO: Refactor pair, triple and four into a separate method */
 		List<Card> four = null;
 		List<Card> rest = new ArrayList<Card>();
 		for (Face f : groupedByFaces.keySet()) {
