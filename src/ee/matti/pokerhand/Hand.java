@@ -8,6 +8,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import ee.matti.pokerhand.combinations.FourOfAKind;
+import ee.matti.pokerhand.combinations.Pair;
+import ee.matti.pokerhand.combinations.Triple;
+import ee.matti.pokerhand.combinations.TwoPairs;
+
 
 public class Hand implements Comparable<Hand> {
 	private final List<Card> cards;

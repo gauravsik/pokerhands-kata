@@ -1,7 +1,7 @@
 package ee.matti.pokerhand.rankers;
 
-import ee.matti.pokerhand.FourOfAKind;
 import ee.matti.pokerhand.Hand;
+import ee.matti.pokerhand.combinations.FourOfAKind;
 
 public class FourOfAKindRanker implements Ranker {
 

@@ -7,6 +7,7 @@ import static org.hamcrest.Matchers.is;
 
 import org.junit.Test;
 
+import ee.matti.pokerhand.combinations.TwoPairs;
 import ee.matti.pokerhand.rankers.FlushRanker;
 import ee.matti.pokerhand.rankers.FourOfAKindRanker;
 import ee.matti.pokerhand.rankers.HighCardRanker;

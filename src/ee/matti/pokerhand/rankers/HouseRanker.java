@@ -1,7 +1,7 @@
 package ee.matti.pokerhand.rankers;
 
 import ee.matti.pokerhand.Hand;
-import ee.matti.pokerhand.Triple;
+import ee.matti.pokerhand.combinations.Triple;
 
 public class HouseRanker implements Ranker {
 
