@@ -37,23 +37,24 @@ public class Hand implements Comparable<Hand> {
 	}
 	
 	public Card highCard() {
-		List<Card> sorted = new ArrayList<Card>(cards);
-		Collections.sort(sorted, new Comparator<Card>() {
-			@Override
-			public int compare(Card o1, Card o2) {
-				return o2.compareTo(o1);
-			}
-		});
-		return sorted.get(0);
+		List<Card> sorted = cardSortedByFace();
+		return sorted.get(sorted.size() - 1);
 	}
 
 	public Pair pair() {
+		List<Card> pair = null;
+		List<Card> rest = new ArrayList<Card>();
 		for (Face f : groupedByFaces.keySet()) {
 			if (groupedByFaces.get(f).size() == 2) {
-				Card c1 = groupedByFaces.get(f).get(0);
-				Card c2 = groupedByFaces.get(f).get(1);
-				return new Pair(c1, c2);
+				pair = groupedByFaces.get(f);
+			} else {
+				rest.addAll(groupedByFaces.get(f));
 			}
+		}
+		if (pair != null && rest.size() == 3) {
+			Collections.sort(rest);
+			Collections.reverse(rest);
+			return new Pair(pair.get(0), pair.get(1), rest);
 		}
 		throw new IllegalStateException("Hand does not contain any pairs: " + this.toString());
 	}
@@ -163,15 +164,7 @@ public class Hand implements Comparable<Hand> {
 	}
 
 	public boolean isStraightFlush() {
-		List<Card> sorted = cardSortedByFace();
-		Card prev = sorted.remove(0);
-		for (Card curr : sorted) {
-			if (prev.suit() != curr.suit()
-					|| curr.face().ordinal() - prev.face().ordinal() != 1)
-				return false;
-			prev = curr;
-		}
-		return true;
+		return isStraight() && isFlush();
 	}
 
 	public boolean isFlush() {

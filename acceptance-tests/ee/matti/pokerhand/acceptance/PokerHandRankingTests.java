@@ -54,6 +54,22 @@ public class PokerHandRankingTests {
 	}
 	
 	@Test
+	public void high_card_beats_when_pairs_equal() {
+		Hand stronger = parse("2H", "2C", "TH", "QH", "AH");
+		Hand weaker = parse("2D", "2S", "TD", "QD", "KD");
+		
+		assertThat(stronger.compareTo(weaker), is(positive()));
+	}
+	
+	@Test
+	public void highest_nonpair_card_beats_when_pairs_equal() {
+		Hand stronger = parse("TH", "TC", "2H", "3H", "6H");
+		Hand weaker = parse("TD", "TS", "3D", "4D", "5D");
+		
+		assertThat(stronger.compareTo(weaker), is(positive()));
+	}
+	
+	@Test
 	public void two_pairs_should_beat_one_pair() {
 		Hand twoPairs = parse("2H", "2C", "3H", "3D", "KH");
 		Hand onePair = parse("AD", "AS", "TC", "QD", "KD");
