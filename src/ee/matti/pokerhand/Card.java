@@ -33,11 +33,6 @@ public class Card implements Comparable<Card> {
 	}
 
 	@Override
-	public int hashCode() {
-		return suit.hashCode() + face.hashCode();
-	}
-
-	@Override
 	public String toString() {
 		return "<" + face + " of "+ suit + ">";
 	}

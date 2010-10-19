@@ -33,7 +33,6 @@ public class PokerHandRankingTests {
 	public void pair_is_stronger_than_high_card() {
 		Hand stronger = parse("2H", "2C", "TH", "QH", "KH");
 		Hand weaker = parse("2D", "3D", "TH", "QD", "AD");
-		
 		assertThat(stronger.compareTo(weaker), is(positive()));
 	}
 	

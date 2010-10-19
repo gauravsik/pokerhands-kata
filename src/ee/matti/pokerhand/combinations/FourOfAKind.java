@@ -1,8 +1,10 @@
 package ee.matti.pokerhand.combinations;
 
+import java.util.List;
+
+import junit.framework.Assert;
 import ee.matti.pokerhand.Card;
 import ee.matti.pokerhand.Face;
-import junit.framework.Assert;
 
 public class FourOfAKind {
 	public final Card card1;
@@ -25,6 +27,10 @@ public class FourOfAKind {
 				&& card3.face() == card4.face());
 	}
 	
+	public FourOfAKind(List<Card> cards, Card remaining) {
+		this(cards.get(0), cards.get(1), cards.get(2), cards.get(3), remaining);
+	}
+
 	public Face face() {
 		return card1.face();
 	}

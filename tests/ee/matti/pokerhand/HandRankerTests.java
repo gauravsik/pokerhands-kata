@@ -46,6 +46,12 @@ public class HandRankerTests {
 		assertThat(new PairRanker().matches(h), is(false));
 	}
 	
+	@Test(expected=IllegalStateException.class)
+	public void asking_for_pair_when_none_should_throw() {
+		Hand h = parse("2H", "3D", "5S", "6H", "7D");
+		h.pair();
+	}
+	
 	@Test
 	public void test_pair_matches() throws Exception {
 		Hand h = parse("2H", "2S");
@@ -77,6 +83,18 @@ public class HandRankerTests {
 	public void test_matching_a_triple() {
 		Hand h = parse("2S", "2D", "2C", "3S", "4D");
 		assertThat(new TripleRanker().matches(h), is(true));
+	}
+	
+	@Test(expected=IllegalStateException.class)
+	public void asking_a_triple_throws_when_none_present() {
+		Hand h = parse("2S", "2D", "7C", "3S", "4D");
+		h.triple();
+	}
+	
+	@Test(expected=IllegalStateException.class)
+	public void asking_four_throws_when_none_present() {
+		Hand h = parse("2S", "2D", "7C", "3S", "4D");
+		h.fourOfAKind();
 	}
 	
 	@Test

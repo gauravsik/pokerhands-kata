@@ -6,7 +6,7 @@ public enum Suit {
 	HEARTS("H"),
 	SPADES("S");
 	
-	private String code;
+	private final String code;
 	
 	Suit(String c) {
 		code = c;

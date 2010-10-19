@@ -42,21 +42,8 @@ public class Hand implements Comparable<Hand> {
 	}
 
 	public Pair pair() {
-		List<Card> pair = null;
-		List<Card> rest = new ArrayList<Card>();
-		for (Face f : groupedByFaces.keySet()) {
-			if (groupedByFaces.get(f).size() == 2) {
-				pair = groupedByFaces.get(f);
-			} else {
-				rest.addAll(groupedByFaces.get(f));
-			}
-		}
-		if (pair != null && rest.size() == 3) {
-			Collections.sort(rest);
-			Collections.reverse(rest);
-			return new Pair(pair.get(0), pair.get(1), rest);
-		}
-		throw new IllegalStateException("Hand does not contain any pairs: " + this.toString());
+		Tuple<List<Card>,List<Card>> tuple = findCombinationOf(2);
+		return new Pair(tuple.first.get(0), tuple.first.get(1), tuple.second);
 	}
 	
 	private Map<Face,List<Card>> groupByFaces() {
@@ -131,19 +118,8 @@ public class Hand implements Comparable<Hand> {
 	}
 
 	public Triple triple() {
-		List<Card> triple = null;
-		List<Card> rest = new ArrayList<Card>();
-		for (Face f : groupedByFaces.keySet()) {
-			if (groupedByFaces.get(f).size() == 3) {
-				triple = groupedByFaces.get(f);
-			} else {
-				rest.addAll(groupedByFaces.get(f));
-			}
-		}
-		if (triple != null && rest.size() == 2) {
-			return new Triple(triple.get(0), triple.get(1), triple.get(2), rest.get(0), rest.get(1));
-		}
-		throw new IllegalStateException("Requested triple when there is none");
+		Tuple<List<Card>,List<Card>> t = findCombinationOf(3);
+		return new Triple(t.first.get(0), t.first.get(1), t.first.get(2), t.second.get(0), t.second.get(1));	
 	}
 
 	public boolean isStraight() {
@@ -180,19 +156,29 @@ public class Hand implements Comparable<Hand> {
 	}
 
 	public FourOfAKind fourOfAKind() {
-		/* TODO: Refactor pair, triple and four into a separate method */
-		List<Card> four = null;
+		Tuple<List<Card>,List<Card>> t = findCombinationOf(4);
+		return new FourOfAKind(t.first, t.second.get(0));
+	}
+	
+	public static <F,S> Tuple<F,S> tuple(F f, S s) {
+		return new Tuple<F,S>(f, s);
+	}
+
+	private Tuple<List<Card>,List<Card>> findCombinationOf(int numberOfFaces) {
+		List<Card> pair = null;
 		List<Card> rest = new ArrayList<Card>();
 		for (Face f : groupedByFaces.keySet()) {
-			if (groupedByFaces.get(f).size() == 4) {
-				four = groupedByFaces.get(f);
+			if (groupedByFaces.get(f).size() == numberOfFaces) {
+				pair = groupedByFaces.get(f);
 			} else {
 				rest.addAll(groupedByFaces.get(f));
 			}
 		}
-		if (four != null && rest.size() == 1) {
-			return new FourOfAKind(four.get(0), four.get(1), four.get(2), four.get(3), rest.get(0));
+		if (pair != null && rest.size() == (5 - numberOfFaces)) {
+			Collections.sort(rest);
+			Collections.reverse(rest);
+			return tuple(pair, rest);
 		}
-		throw new IllegalStateException("Requested triple when there is none");
+		throw new IllegalStateException("Hand does not contain any pairs: " + this.toString());
 	}
 }

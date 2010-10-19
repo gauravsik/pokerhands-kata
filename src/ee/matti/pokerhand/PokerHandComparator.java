@@ -12,33 +12,41 @@ import ee.matti.pokerhand.rankers.TripleRanker;
 import ee.matti.pokerhand.rankers.TwoPairsRanker;
 
 public class PokerHandComparator {
-
-	public int compare(Hand h1, Hand h2) {
-		Ranker rs[] = new Ranker[] {
-			new StraightFlushRanker(),
-			new FourOfAKindRanker(),
-			new HouseRanker(),
-			new FlushRanker(),
-			new StraightRanker(),
-			new TripleRanker(),
-			new TwoPairsRanker(),
-			new PairRanker(),
-			new HighCardRanker()
+	private Ranker rankers[];
+	private Ranker defaultRanker = new HighCardRanker();
+	
+	public PokerHandComparator() {
+		rankers = new Ranker[] {
+				new StraightFlushRanker(),
+				new FourOfAKindRanker(),
+				new HouseRanker(),
+				new FlushRanker(),
+				new StraightRanker(),
+				new TripleRanker(),
+				new TwoPairsRanker(),
+				new PairRanker()
 		};
-
-		for (Ranker r : rs) {
-			if (r.matches(h1) && r.matches(h2)) {
-				return r.compare(h1, h2);
-			}
-			else if (r.matches(h1)) {
-				return 1;
-			} 
-			else if(r.matches(h2)) {
-				return -1;
-			}
-		}
+	}
+	
+	public int compare(Hand h1, Hand h2) {
+		Ranker r = findMatchingRanker(h1, h2);
 		
-		return 0;
+		if (r.matches(h1) && r.matches(h2)) {
+			return r.compare(h1, h2);
+		}
+		else if (r.matches(h1)) {
+			return 1;
+		} 
+		else {
+			return -1;
+		}
 	}
 
+	private Ranker findMatchingRanker(Hand h1, Hand h2) {
+		for (Ranker r : rankers) {
+			if (r.matches(h1) || r.matches(h2))
+				return r;
+		}
+		return defaultRanker;
+	}
 }
